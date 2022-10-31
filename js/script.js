@@ -5,17 +5,37 @@ class Book {
   }
 }
 
-const defaultBooks = [
-  {
-    title: 'Lorem, ipsum',
-    author: 'Testeroo Testyy',
-  },
-  {
-    title: 'Lorem, ipsum',
-    author: 'Testeroo Testyy',
-  },
-];
+class Storage {
+  static getBooks() {
+    let books;
+    if (localStorage.getItem('books') === null) {
+      books = [];
+    } else {
+      books = JSON.parse(localStorage.getItem('books'));
+    }
 
+    return books;
+  }
+
+  static addBook(book) {
+    const books = Storage.getBooks();
+    books.push(book);
+    localStorage.setItem('books', JSON.stringify(books));
+  }
+
+  static removeBook(title) {
+    const books = Storage.getBooks();
+
+    books.forEach((book, index) => {
+      if (book.title === title) {
+        books.splice(index, 1);
+      }
+    });
+
+    localStorage.setItem('books', JSON.stringify(books));
+  }
+}
+const defaultBooks = Storage.getBooks();
 class Show {
   static removeBook(target) {
     if (target.classList.contains('delete')) {
@@ -31,10 +51,10 @@ class Show {
   }
 
   static showBooks() {
-    defaultBooks.forEach((data) => Show.addBook(data));
+    defaultBooks.forEach((data) => Show.addBookToList(data));
   }
 
-  static addBook(data) {
+  static addBookToList(data) {
     const bookSection = document.querySelector('#data');
     const render = document.createElement('div');
     render.innerHTML = `
@@ -58,7 +78,15 @@ function addABook(e) {
   const author = document.querySelector('#author').value;
 
   const book = new Book(title, author);
-  Show.addBook(book);
+
+  // Add book to Display
+  Show.addBookToList(book);
+
+  // Add book to list
+
+  Storage.addBook(book);
+
+  // Clear input box after entering new book
   Show.clearFields();
 }
 

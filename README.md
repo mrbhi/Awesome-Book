@@ -1,6 +1,6 @@
 # Project Name
 
-> Awesome book
+- Awesome book
   Plain JavaScript with Classes to add and remove book from an array of object and using local storage
 
 ## Built With
@@ -14,17 +14,13 @@ For this project we implemented adding and removing of books using JavaScript
 
 ### Setup
 
-- Clone the project using this link: git@github.com:mrbhi/Awesome-Book.git
+- Clone the project using this link: https://github.com/mrbhi/Awesome-Book.git
 
 ## Authors
 
-👤 **Author1**
+👤 **Author**
 
-- GitHub: [@mrbhi](https://github.com/mrbhi/Awesome-Book)
-
-👤 **Author2**
-
-- GitHub: [@AbdifatahYasin1](https://github.com/AbdifatahYasin1/Awesome-Book)
+- GitHub: [@mrbhi](https://github.com/mrbhi)
 
 ## 🤝 Contributing
 
