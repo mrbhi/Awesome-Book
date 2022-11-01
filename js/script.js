@@ -1,65 +1,94 @@
-const form = document.querySelector('#form');
-const data = document.querySelector('#data');
-
-function addNewBookData() {
-  const bookTitle = form.title.value;
-  const bookAuthor = form.author.value;
-
-  const book = {
-    title: bookTitle,
-    author: bookAuthor,
-  };
-
-  return book;
+class Book {
+  constructor(title, author) {
+    this.title = title;
+    this.author = author;
+  }
 }
 
-function saveBooks(book) {
-  let books = [];
+class Store {
+  static getBooks() {
+    let books;
+    if (localStorage.getItem('books') === null) {
+      books = [];
+    } else {
+      books = JSON.parse(localStorage.getItem('books'));
+    }
 
-  if (localStorage.getItem('Books')) {
-    books = JSON.parse(localStorage.getItem('Books'));
+    return books;
   }
 
-  books.push(book);
-  localStorage.setItem('Books', JSON.stringify(books));
-}
+  static addBook(book) {
+    const books = Store.getBooks();
+    books.push(book);
+    localStorage.setItem('books', JSON.stringify(books));
+  }
 
-function addBook(element) {
-  element.preventDefault();
-  saveBooks(addNewBookData());
-  form.submit();
-}
+  static removeBook(author) {
+    const books = Store.getBooks();
 
-function showBooks() {
-  if (localStorage.getItem('Books')) {
-    const books = JSON.parse(localStorage.getItem('Books'));
-    books.forEach((book) => {
-      const booksHtml = `
-        <div id="info" class="info">
-          <span class="title">${book.title}</span> <br>
-          <span class="author">${book.author}</span> <br>
-          <span><button id="delete" class="delete">Remove</button></span> <br>
-<hr color="black" size="1px" />
-        </div>`;
-      data.innerHTML += booksHtml;
+    books.forEach((book, index) => {
+      if (book.author === author) {
+        books.splice(index, 1);
+      }
     });
+
+    localStorage.setItem('books', JSON.stringify(books));
   }
 }
 
-showBooks();
-form.addEventListener('submit', addBook);
-function removeBook(index) {
-  if (localStorage.getItem('Books')) {
-    const books = JSON.parse(localStorage.getItem('Books'));
-    books.splice(index, 1);
-    localStorage.clear();
-    localStorage.setItem('Books', JSON.stringify(books));
+class UI {
+  static displayBooks() {
+    const books = Store.getBooks();
+
+    books.forEach((book) => UI.addBookToList(book));
+  }
+
+  static addBookToList(book) {
+    const list = document.querySelector('#data');
+
+    const row = document.createElement('div');
+    row.classList.add('column');
+
+    row.innerHTML = `<span>"${book.title}"</span>
+<span>by</span>
+<span class="col2">${book.author}</span>
+<span>
+<button id="delete" class="delete">Remove</button>
+</span>`;
+    list.appendChild(row);
+  }
+
+  static deleteBook(el) {
+    if (el.classList.contains('delete')) {
+      el.parentElement.parentElement.remove();
+    }
+  }
+
+  static clearFields() {
+    document.querySelector('#title').value = '';
+    document.querySelector('#author').value = '';
   }
 }
 
-data.querySelectorAll('.delete').forEach((btn, index) => {
-  btn.addEventListener('click', () => {
-    removeBook(index);
-    btn.parentElement.parentElement.remove();
-  });
+document.addEventListener('DOMContentLoaded', UI.displayBooks);
+
+document.querySelector('#form').addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const title = document.querySelector('#title').value;
+  const author = document.querySelector('#author').value;
+
+  const book = new Book(title, author);
+
+  UI.addBookToList(book);
+
+  Store.addBook(book);
+
+  UI.clearFields();
+});
+
+document.querySelector('#data').addEventListener('click', (e) => {
+  UI.deleteBook(e.target);
+
+  Store.removeBook(e.target.parentElement.previousElementSibling.textContent);
 });
