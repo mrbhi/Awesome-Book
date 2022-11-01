@@ -38,9 +38,9 @@ function showBooks() {
         <div id="info" class="info">
           <span class="title">${book.title}</span> <br>
           <span class="author">${book.author}</span> <br>
-          <span><button class="remove-btn">Remove</button></span> <br><br>
-        </div>
-      `;
+          <span><button id="delete" class="delete">Remove</button></span> <br>
+<hr color="black" size="1px" />
+        </div>`;
       data.innerHTML += booksHtml;
     });
   }
@@ -57,7 +57,7 @@ function removeBook(index) {
   }
 }
 
-data.querySelectorAll('.remove-btn').forEach((btn, index) => {
+data.querySelectorAll('.delete').forEach((btn, index) => {
   btn.addEventListener('click', () => {
     removeBook(index);
     btn.parentElement.parentElement.remove();
