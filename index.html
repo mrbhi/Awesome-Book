@@ -8,15 +8,22 @@
     <title>Awesome Book</title>
 </head>
 <body>
+  <section class="container">
     <h1>All awesome books</h1>
     <section id="data" class="data">
     </section>
+    <div class="line">
+      <hr width="30%">
+    </div>
+    <div class="addbook">
+      <h1>Add a new book</h1>
+    </div>
     <form id="form">
-      <input id="title" type="text" placeholder="Title" required/> <br> <br>
-      <input id="author" type="text" placeholder="Author" required/> <br> <br>
-      <input id="submit" type="submit" value="Add" class="submit" />
+      <input id="title" class="title" type="text" placeholder="Title" required/> <br> 
+      <input id="author" class="author" type="text" placeholder="Author" required/> <br>
+      <input id="submit" class="submit" type="submit" value="Add" class="submit" />
     </form>
-    
-    <script src="js/script.js"></script>
+  </section>
+  <script src="js/script.js"></script>
 </body>
 </html>
